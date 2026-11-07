@@ -57,6 +57,7 @@ let qrDataUrl = null;
 // --------------- Middleware ---------------
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.get('/', (req, res) => res.redirect('/display.html'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(UPLOAD_DIR, {
   etag: false,

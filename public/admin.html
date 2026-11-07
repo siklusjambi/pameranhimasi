@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Momen dalam Bingkai</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- Login Screen -->
+  <div class="admin-login card" id="login-screen">
+    <div class="admin-brand">HIMASI <span>·</span> GALERI MOMEN</div>
+    <div class="admin-login-mark" aria-hidden="true">H</div>
+    <h1>Ruang kendali</h1>
+    <p>Masuk untuk memantau kiriman dan menjaga galeri tetap berjalan.</p>
+    <div class="admin-error" id="login-error">Password salah</div>
+    <label class="admin-label" for="password-input">Kata sandi operator</label>
+    <input type="password" class="admin-input" id="password-input" placeholder="Masukkan kata sandi" autocomplete="current-password">
+    <button class="btn btn-primary" id="login-btn" style="width:100%">Masuk ke panel</button>
+    <div class="admin-login-footnote">Akses khusus untuk tim penyelenggara</div>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="admin-dashboard" id="dashboard">
+    <div class="admin-header">
+      <div>
+        <div class="admin-brand">HIMASI <span>·</span> GALERI MOMEN</div>
+        <h1>Ruang kendali</h1>
+        <p class="admin-header-subtitle">Pantau setiap momen yang sedang menunggu untuk tampil.</p>
+      </div>
+      <div class="admin-header-actions">
+        <button class="btn btn-danger btn-sm" id="clear-all-btn">Kosongkan antrean</button>
+        <button class="btn btn-outline btn-sm" id="logout-btn">Keluar</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="admin-stats">
+      <div class="admin-stat card">
+        <div class="admin-stat-value" id="stat-count">0</div>
+        <div class="admin-stat-label">Foto aktif</div>
+      </div>
+      <div class="admin-stat card">
+        <div class="admin-stat-value" id="stat-max">5</div>
+        <div class="admin-stat-label">Kapasitas galeri</div>
+      </div>
+      <div class="admin-stat card">
+        <div class="admin-stat-value" id="stat-displaying">—</div>
+        <div class="admin-stat-label">Sedang tampil</div>
+      </div>
+    </div>
+
+    <!-- Queue list -->
+    <div class="admin-queue-card card">
+      <div class="admin-section-heading">
+        <div>
+          <h2>Antrean galeri</h2>
+          <p>Urutan kiriman pengunjung yang menunggu dan sedang ditampilkan.</p>
+        </div>
+        <span class="admin-live"><span></span> LANGSUNG</span>
+      </div>
+      <div id="queue-list">
+        <div class="admin-queue-empty">Antrian kosong</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Unggah Foto — Momen dalam Bingkai</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/upload.css">
+</head>
+<body class="upload-body">
+
+  <!-- Background -->
+  <div class="upload-bg-orb"></div>
+  <div class="upload-bg-orb"></div>
+
+  <!-- Header -->
+  <header class="upload-header">
+    <div class="upload-brand">HIMASI <span>·</span> GALERI MOMEN</div>
+    <h1 class="upload-title">Satu momen,<br><span>satu cerita.</span></h1>
+    <p class="upload-subtitle">Pilih foto terbaikmu dan bagikan ceritamu bersama pengunjung lainnya.</p>
+  </header>
+
+  <!-- Upload Card -->
+  <div class="upload-card card" id="upload-card">
+
+    <!-- Upload zone -->
+    <div class="upload-zone" id="upload-zone">
+      <div class="upload-zone-icon" aria-hidden="true">＋</div>
+      <div class="upload-zone-text">Pilih foto dari perangkatmu</div>
+      <div class="upload-zone-hint">JPG, PNG, atau WEBP · Maksimal 5 MB</div>
+      <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" hidden>
+    </div>
+
+    <!-- Preview -->
+    <div class="preview-container" id="preview-container">
+      <div class="preview-img-wrap">
+        <img id="preview-img" src="" alt="Preview">
+        <button class="preview-remove" id="preview-remove" title="Hapus">✕</button>
+      </div>
+      <div class="preview-info">
+        <span id="preview-name">foto.jpg</span>
+        <span id="preview-size">1.2 MB</span>
+      </div>
+    </div>
+
+    <!-- Upload button -->
+    <div class="upload-actions" id="upload-actions">
+      <button class="btn btn-primary" id="upload-btn" style="width:100%" disabled>
+        Bagikan momen
+      </button>
+    </div>
+
+    <!-- Upload progress -->
+    <div class="upload-progress" id="upload-progress">
+      <div class="upload-progress-bar-track">
+        <div class="upload-progress-bar-fill" id="upload-progress-fill"></div>
+      </div>
+      <div class="upload-progress-text" id="upload-progress-text">Menyiapkan foto untuk galeri...</div>
+    </div>
+
+    <!-- Queue full message -->
+    <div class="queue-full-message" id="queue-full-message">
+      <div class="queue-full-icon">⏳</div>
+      <div class="queue-full-text">Galeri sedang penuh</div>
+      <div class="queue-full-sub">Coba kembali beberapa saat lagi saat ruang unggah tersedia.</div>
+      <button class="btn btn-outline" id="retry-btn" style="margin-top:0.75rem; width:100%">
+        Coba lagi
+      </button>
+    </div>
+  </div>
+
+  <!-- Status Card (after upload) -->
+  <div class="upload-card card status-card" id="status-card">
+    <div class="status-queue-number" id="status-number">#1</div>
+    <div class="status-queue-label">Nomor antrean</div>
+    <div>
+      <span class="status-badge status-waiting" id="status-badge">
+        <span class="spinner" id="status-spinner"></span>
+        <span id="status-text">Menunggu giliran tampil</span>
+      </span>
+    </div>
+    <div class="status-position" id="status-position">Kami akan memberi kabar saat fotomu tampil.</div>
+    <button class="btn btn-outline btn-sm" id="upload-another-btn" style="margin-top:1rem; display:none">
+      Bagikan momen lain
+    </button>
+  </div>
+
+  <!-- Queue bar -->
+  <div class="queue-bar" id="queue-bar">
+    <div class="queue-bar-dots" id="queue-bar-dots">
+      <div class="queue-bar-dot"></div>
+      <div class="queue-bar-dot"></div>
+      <div class="queue-bar-dot"></div>
+      <div class="queue-bar-dot"></div>
+      <div class="queue-bar-dot"></div>
+    </div>
+    <div class="queue-bar-text" id="queue-bar-text">Antrian: 0 / 5</div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/upload.js"></script>
+</body>
+</html>

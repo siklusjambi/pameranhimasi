@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Momen dalam Bingkai — Display</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/display.css">
+</head>
+<body class="display-body">
+
+  <!-- Background decorative elements -->
+  <div class="bg-decor">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+  </div>
+
+  <!-- ============ SCENE 1: Example Photo ============ -->
+  <div class="scene active" id="scene-example">
+    <div class="scene-col scene-text-col">
+      <div class="event-badge">HIMASI · GALERI MOMEN</div>
+      <h1 class="scene-title">
+        Tampilkan wajahmu<br>di bingkai HIMASI,
+        <span class="text-sky">tunjukkan pesona<br>luar biasamu.</span>
+      </h1>
+      <p class="scene-subtitle">Setiap cerita punya bingkainya sendiri. Jadikan momenmu bagian dari galeri hari ini.</p>
+      <div class="step-badge">01 &nbsp;·&nbsp; Lihat inspirasi</div>
+    </div>
+    <div class="scene-col scene-frame-col">
+      <div class="frame-blob"></div>
+      <div class="frame frame-photo">
+        <!-- SVG: person holding camera, blue tones -->
+        <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" class="placeholder-svg">
+          <defs>
+            <linearGradient id="bgG" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#7DD3FC"/>
+              <stop offset="100%" style="stop-color:#BAE6FD"/>
+            </linearGradient>
+            <linearGradient id="skinG" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" style="stop-color:#F5D6B8"/>
+              <stop offset="100%" style="stop-color:#E8C9A0"/>
+            </linearGradient>
+          </defs>
+          <!-- Background -->
+          <rect width="400" height="500" rx="0" fill="url(#bgG)"/>
+          <!-- Decorative circle (moon/sun) -->
+          <circle cx="320" cy="90" r="50" fill="rgba(255,255,255,0.5)"/>
+          <!-- Body / shirt -->
+          <ellipse cx="200" cy="520" rx="120" ry="100" fill="#0A1F44"/>
+          <!-- Neck -->
+          <rect x="180" y="310" width="40" height="30" rx="8" fill="url(#skinG)"/>
+          <!-- Head -->
+          <ellipse cx="200" cy="245" rx="70" ry="80" fill="url(#skinG)"/>
+          <!-- Hair -->
+          <ellipse cx="200" cy="195" rx="75" ry="55" fill="#0F2E63"/>
+          <ellipse cx="145" cy="230" rx="18" ry="45" fill="#0F2E63"/>
+          <ellipse cx="255" cy="230" rx="18" ry="45" fill="#0F2E63"/>
+          <!-- Eyes -->
+          <ellipse cx="175" cy="260" rx="7" ry="8" fill="#0A1F44"/>
+          <ellipse cx="225" cy="260" rx="7" ry="8" fill="#0A1F44"/>
+          <circle cx="177" cy="257" r="2.5" fill="#38BDF8" opacity="0.5"/>
+          <circle cx="227" cy="257" r="2.5" fill="#38BDF8" opacity="0.5"/>
+          <!-- Smile -->
+          <path d="M180 285 Q200 300 220 285" stroke="#0A1F44" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- Camera -->
+          <rect x="150" y="380" width="100" height="55" rx="12" fill="#132F5E" stroke="#38BDF8" stroke-width="2"/>
+          <circle cx="200" cy="403" r="16" fill="#0A1F44" stroke="#38BDF8" stroke-width="2"/>
+          <circle cx="200" cy="403" r="8" fill="#38BDF8" opacity="0.25"/>
+          <rect x="182" y="374" width="36" height="9" rx="4" fill="#132F5E" stroke="#38BDF8" stroke-width="1.5"/>
+          <!-- Arms holding camera -->
+          <path d="M110 400 Q130 380 150 393" stroke="url(#skinG)" stroke-width="24" fill="none" stroke-linecap="round"/>
+          <path d="M290 400 Q270 380 250 393" stroke="url(#skinG)" stroke-width="24" fill="none" stroke-linecap="round"/>
+          <!-- Sparkles -->
+          <circle cx="50" cy="70" r="4" fill="#fff" opacity="0.5"/>
+          <circle cx="350" cy="180" r="3" fill="#fff" opacity="0.4"/>
+          <circle cx="70" cy="420" r="3.5" fill="#fff" opacity="0.3"/>
+          <circle cx="340" cy="400" r="2.5" fill="#E0F2FE" opacity="0.4"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SCENE 2: QR Code (reversed layout) ============ -->
+  <div class="scene" id="scene-qr">
+    <div class="scene-col scene-frame-col">
+      <div class="frame-blob blob-left"></div>
+      <div class="frame frame-qr">
+        <img id="qr-image" src="" alt="QR Code">
+        <p class="frame-caption">Pindai untuk unggah fotomu</p>
+      </div>
+    </div>
+    <div class="scene-col scene-text-col text-right">
+      <div class="event-badge">HIMASI · BAGIKAN CERITAMU</div>
+      <h1 class="scene-title">
+        Satu pindai,<br>satu cerita.
+        <span class="text-sky">Giliranmu bersinar<br>di layar pameran.</span>
+      </h1>
+      <p class="scene-subtitle">Arahkan kamera ponsel ke kode, pilih foto terbaikmu, lalu kirim untuk ditampilkan.</p>
+      <div class="step-badge">02 &nbsp;·&nbsp; Pindai untuk mengunggah</div>
+    </div>
+  </div>
+
+  <!-- ============ SCENE 3: Visitor Photo ============ -->
+  <div class="scene" id="scene-visitor">
+    <div class="scene-col scene-text-col">
+      <div class="event-badge">HIMASI · CERITA PENGUNJUNG</div>
+      <h1 class="scene-title">
+        Profil <span class="text-sky">pengunjung</span>
+      </h1>
+      <div class="visitor-fields">
+        <div class="visitor-field">
+          <div class="field-label">NOMOR ANTRIAN</div>
+          <div class="field-value field-number" id="visitor-queue-num">#1</div>
+        </div>
+        <div class="visitor-field">
+          <div class="field-label">STATUS MOMEN</div>
+          <div class="field-value">Tampil di galeri</div>
+        </div>
+      </div>
+      <p class="visitor-note">Terima kasih telah berbagi. Momen kecilmu kini menjadi bagian dari cerita HIMASI.</p>
+      <div class="step-badge" id="round-badge">Putaran 1 / 2</div>
+    </div>
+    <div class="scene-col scene-frame-col">
+      <div class="frame-blob"></div>
+      <div class="frame frame-visitor">
+        <img id="visitor-photo" src="" alt="Foto Pengunjung">
+      </div>
+    </div>
+  </div>
+
+  <!-- Queue indicator (bottom center) -->
+  <div class="queue-indicator">
+    <div class="queue-dots" id="queue-dots">
+      <div class="queue-dot"></div>
+      <div class="queue-dot"></div>
+      <div class="queue-dot"></div>
+      <div class="queue-dot"></div>
+      <div class="queue-dot"></div>
+    </div>
+    <span class="queue-count" id="queue-count">0 / 5</span>
+  </div>
+
+  <!-- Progress bar (very bottom) -->
+  <div class="progress-track">
+    <div class="progress-fill" id="progress-bar"></div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/display.js"></script>
+</body>
+</html>

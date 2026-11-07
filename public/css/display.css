@@ -241,8 +241,13 @@ body.display-body {
 }
 
 .visitor-field {
+  min-width: 0;
   padding: 0.85rem 0;
   border-bottom: 1px solid rgba(125, 211, 252, 0.2);
+}
+
+.visitor-field[hidden] {
+  display: none;
 }
 
 .field-label {
@@ -258,6 +263,17 @@ body.display-body {
   font-size: clamp(1.15rem, 2vw, 1.7rem);
   font-weight: 650;
   letter-spacing: -0.025em;
+  overflow-wrap: anywhere;
+}
+
+.visitor-words {
+  font-size: clamp(1rem, 1.55vw, 1.35rem);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.visitor-words-field {
+  max-width: 100%;
 }
 
 .field-number {
@@ -443,15 +459,20 @@ body.display-body {
   }
 
   .field-label {
-    font-size: 0.62rem;
+    font-size: 0.56rem;
   }
 
   .field-value {
-    font-size: 1rem;
+    font-size: 0.83rem;
+    line-height: 1.25;
+  }
+
+  .visitor-words {
+    font-size: 0.78rem;
   }
 
   .field-number {
-    font-size: 1.5rem;
+    font-size: 1.15rem;
   }
 
   .visitor-note {

@@ -27,14 +27,18 @@ const UPLOAD_DIR = path.join(__dirname, 'uploads');
 // Ensure uploads directory exists and clean it on startup
 if (fs.existsSync(UPLOAD_DIR)) {
   fs.readdirSync(UPLOAD_DIR).forEach(f => {
-    try { fs.unlinkSync(path.join(UPLOAD_DIR, f)); } catch {}
+    try {
+      fs.unlinkSync(path.join(UPLOAD_DIR, f));
+    } catch (error) {
+      console.error(`Failed to remove old upload ${f}:`, error);
+    }
   });
 } else {
   fs.mkdirSync(UPLOAD_DIR);
 }
 
 // --------------- Queue State ---------------
-// Each entry: { id, filename, deviceId, status: 'waiting'|'displaying'|'done', queueNumber }
+// Guest details stay in process memory and are discarded with their queue entry.
 let queue = [];
 let globalQueueCounter = 0;
 let qrDataUrl = null;
@@ -54,7 +58,12 @@ let qrDataUrl = null;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static(UPLOAD_DIR));
+app.use('/uploads', express.static(UPLOAD_DIR, {
+  etag: false,
+  lastModified: false,
+  maxAge: 0,
+  setHeaders: res => res.setHeader('Cache-Control', 'no-store')
+}));
 
 // Multer config
 const storage = multer.diskStorage({
@@ -67,7 +76,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
+  limits: { fileSize: 5 * 1024 * 1024, fields: 5, fieldSize: 1024 }, // 5 MB, five small metadata fields
   fileFilter: (req, file, cb) => {
     const allowed = ['image/jpeg', 'image/png', 'image/webp'];
     if (allowed.includes(file.mimetype)) {
@@ -98,22 +107,36 @@ function broadcastQueue() {
 }
 
 function deletePhotoFile(entry) {
-  if (!entry) return;
+  if (!entry) return true;
   const filepath = path.join(UPLOAD_DIR, entry.filename);
   try {
     if (fs.existsSync(filepath)) fs.unlinkSync(filepath);
-  } catch {}
+    return true;
+  } catch (error) {
+    console.error(`Failed to delete upload ${entry.filename}:`, error);
+    return false;
+  }
+}
+
+function deleteRejectedUpload(filepath) {
+  try {
+    fs.unlinkSync(filepath);
+    return true;
+  } catch (error) {
+    console.error(`Failed to remove rejected upload ${path.basename(filepath)}:`, error);
+    return false;
+  }
 }
 
 function markDone(id) {
   const entry = queue.find(e => e.id === id);
-  if (entry) {
-    entry.status = 'done';
-    deletePhotoFile(entry);
-    // Clean done entries from queue
-    queue = queue.filter(e => e.status !== 'done');
-    broadcastQueue();
-  }
+  if (!entry) return true;
+  if (!deletePhotoFile(entry)) return false;
+
+  entry.status = 'done';
+  queue = queue.filter(e => e.status !== 'done');
+  broadcastQueue();
+  return true;
 }
 
 // --------------- API Routes ---------------
@@ -132,19 +155,38 @@ app.post('/api/upload', (req, res) => {
       return res.status(400).json({ error: 'Tidak ada file yang diunggah.' });
     }
 
+    const guest = {
+      name: typeof req.body.name === 'string' ? req.body.name.trim() : '',
+      feeling: typeof req.body.feeling === 'string' ? req.body.feeling.trim() : '',
+      socialMedia: typeof req.body.socialMedia === 'string' ? req.body.socialMedia.trim() : '',
+      words: typeof req.body.words === 'string' ? req.body.words.trim() : ''
+    };
+    if (!guest.name || guest.name.length > 60 ||
+        !guest.feeling || guest.feeling.length > 80 ||
+        guest.socialMedia.length > 80 ||
+        !guest.words || guest.words.length > 180) {
+      if (!deleteRejectedUpload(req.file.path)) {
+        return res.status(500).json({ error: 'Foto gagal dibersihkan. Hubungi operator.' });
+      }
+      return res.status(400).json({ error: 'Lengkapi nama, perasaan hari ini, dan kata-kata hari ini. Periksa batas panjang setiap kolom.' });
+    }
+
     const deviceId = req.body.deviceId || 'unknown';
 
     // Check anti-spam: 1 active photo per device
     const existing = getActiveQueue().find(e => e.deviceId === deviceId);
     if (existing) {
-      // Delete uploaded file
-      try { fs.unlinkSync(req.file.path); } catch {}
+      if (!deleteRejectedUpload(req.file.path)) {
+        return res.status(500).json({ error: 'Foto gagal dibersihkan. Hubungi operator.' });
+      }
       return res.status(429).json({ error: 'Kamu sudah memiliki foto aktif dalam antrian.', existingId: existing.id, queueNumber: existing.queueNumber });
     }
 
     // Check queue capacity
     if (getActiveQueue().length >= MAX_QUEUE) {
-      try { fs.unlinkSync(req.file.path); } catch {}
+      if (!deleteRejectedUpload(req.file.path)) {
+        return res.status(500).json({ error: 'Foto gagal dibersihkan. Hubungi operator.' });
+      }
       return res.status(429).json({ error: 'Antrian penuh, coba lagi sebentar.' });
     }
 
@@ -153,6 +195,7 @@ app.post('/api/upload', (req, res) => {
       id: uuidv4(),
       filename: req.file.filename,
       deviceId,
+      guest,
       status: 'waiting',
       queueNumber: globalQueueCounter,
       uploadedAt: Date.now()
@@ -202,14 +245,16 @@ app.get('/api/next-photo', (req, res) => {
     hasNext: true,
     id: entry.id,
     url: `/uploads/${entry.filename}`,
-    queueNumber: entry.queueNumber
+    queueNumber: entry.queueNumber,
+    guest: entry.guest
   });
 });
 
 // Mark photo as done displaying
 app.post('/api/photo-done', (req, res) => {
   const { id } = req.body;
-  markDone(id);
+  if (!id) return res.status(400).json({ error: 'ID foto diperlukan.' });
+  if (!markDone(id)) return res.status(500).json({ error: 'Foto belum dapat dihapus. Coba lagi atau hapus melalui panel operator.' });
   res.json({ success: true });
 });
 
@@ -240,16 +285,17 @@ app.get('/api/admin/queue', adminAuth, (req, res) => {
 app.delete('/api/admin/photo/:id', adminAuth, (req, res) => {
   const entry = queue.find(e => e.id === req.params.id);
   if (!entry) return res.status(404).json({ error: 'Foto tidak ditemukan.' });
-  deletePhotoFile(entry);
+  if (!deletePhotoFile(entry)) return res.status(500).json({ error: 'File foto gagal dihapus.' });
   queue = queue.filter(e => e.id !== req.params.id);
   broadcastQueue();
   res.json({ success: true });
 });
 
 app.delete('/api/admin/queue', adminAuth, (req, res) => {
-  queue.forEach(e => deletePhotoFile(e));
-  queue = [];
+  const retained = queue.filter(e => !deletePhotoFile(e));
+  queue = retained;
   broadcastQueue();
+  if (retained.length) return res.status(500).json({ error: 'Sebagian file gagal dihapus. Periksa log server.' });
   res.json({ success: true });
 });
 

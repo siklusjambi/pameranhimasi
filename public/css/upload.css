@@ -131,6 +131,231 @@ body.upload-body {
   opacity: 0.72;
 }
 
+/* Camera capture */
+.upload-choice-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.9rem 0;
+  color: #7893b2;
+  font-size: 0.75rem;
+}
+
+.upload-choice-divider::before,
+.upload-choice-divider::after {
+  flex: 1;
+  height: 1px;
+  background: rgba(125, 211, 252, 0.15);
+  content: "";
+}
+
+.camera-open-btn {
+  width: 100%;
+  min-height: 46px;
+  border-width: 1px;
+  border-radius: 11px;
+  font-size: 0.87rem;
+}
+
+.camera-open-btn span {
+  font-size: 1.2rem;
+}
+
+.camera-panel {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.camera-panel[hidden],
+.guest-form[hidden] {
+  display: none !important;
+}
+
+.camera-prompt-card {
+  position: relative;
+  padding: 0.8rem 6rem 0.8rem 0.9rem;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 12px;
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.camera-prompt-label {
+  color: var(--sky-400);
+  font-size: 0.62rem;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+}
+
+.camera-prompt-card p {
+  margin-top: 0.25rem;
+  color: var(--sky-100);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.camera-prompt-refresh {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  padding: 0.4rem 0.55rem;
+  transform: translateY(-50%);
+  border: 1px solid rgba(125, 211, 252, 0.28);
+  border-radius: 8px;
+  background: rgba(7, 26, 54, 0.6);
+  color: var(--sky-400);
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  cursor: pointer;
+}
+
+.camera-view {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border: 1px solid rgba(125, 211, 252, 0.2);
+  border-radius: 14px;
+  background: #04152d;
+}
+
+.camera-view video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.camera-guide {
+  position: absolute;
+  inset: 12%;
+  border: 1px solid rgba(224, 242, 254, 0.56);
+  border-radius: 42%;
+  box-shadow: 0 0 0 999px rgba(4, 15, 32, 0.12);
+  pointer-events: none;
+}
+
+.camera-error {
+  color: #fca5a5;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.camera-error:empty {
+  display: none;
+}
+
+.camera-actions {
+  display: flex;
+  gap: 0.65rem;
+}
+
+.camera-actions .btn {
+  min-height: 42px;
+  flex: 1;
+  border-radius: 10px;
+}
+
+.camera-actions .btn-outline {
+  border-width: 1px;
+}
+
+/* Guest details */
+.guest-form {
+  margin-top: 1.4rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(125, 211, 252, 0.16);
+}
+
+.guest-form-heading {
+  margin-bottom: 1rem;
+}
+
+.guest-form-step {
+  color: var(--sky-400);
+  font-size: 0.65rem;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+}
+
+.guest-form-heading h2 {
+  margin-top: 0.35rem;
+  color: var(--sky-100);
+  font-size: 1.12rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.guest-form-heading p {
+  margin-top: 0.35rem;
+  color: #9ab8d9;
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.guest-field {
+  display: block;
+  margin-top: 0.85rem;
+  color: #c8dbee;
+  font-size: 0.79rem;
+  font-weight: 600;
+}
+
+.guest-field > span {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.42rem;
+}
+
+.required-mark {
+  color: var(--sky-400);
+}
+
+.optional-mark {
+  color: #7893b2;
+  font-size: 0.68rem;
+  font-weight: 450;
+}
+
+.guest-field input,
+.guest-field textarea {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid rgba(125, 211, 252, 0.22);
+  border-radius: 10px;
+  outline: none;
+  background: rgba(4, 20, 43, 0.54);
+  color: var(--sky-100);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 400;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.guest-field textarea {
+  min-height: 82px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.guest-field input::placeholder,
+.guest-field textarea::placeholder {
+  color: #7893b2;
+}
+
+.guest-field input:focus,
+.guest-field textarea:focus {
+  border-color: var(--sky-500);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+}
+
+.guest-form .upload-actions {
+  margin-top: 1.15rem;
+}
+
 /* Preview */
 .preview-container {
   display: none;

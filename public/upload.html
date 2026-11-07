@@ -17,19 +17,43 @@
   <header class="upload-header">
     <div class="upload-brand">HIMASI <span>·</span> GALERI MOMEN</div>
     <h1 class="upload-title">Satu momen,<br><span>satu cerita.</span></h1>
-    <p class="upload-subtitle">Pilih foto terbaikmu dan bagikan ceritamu bersama pengunjung lainnya.</p>
+    <p class="upload-subtitle">Pilih foto dari perangkat atau ambil langsung dengan kamera, lalu ceritakan tentang dirimu.</p>
   </header>
 
   <!-- Upload Card -->
   <div class="upload-card card" id="upload-card">
 
-    <!-- Upload zone -->
-    <div class="upload-zone" id="upload-zone">
-      <div class="upload-zone-icon" aria-hidden="true">＋</div>
-      <div class="upload-zone-text">Pilih foto dari perangkatmu</div>
-      <div class="upload-zone-hint">JPG, PNG, atau WEBP · Maksimal 5 MB</div>
-      <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" hidden>
+    <div id="photo-source-controls">
+      <!-- Upload zone -->
+      <div class="upload-zone" id="upload-zone">
+        <div class="upload-zone-icon" aria-hidden="true">＋</div>
+        <div class="upload-zone-text">Pilih foto dari perangkatmu</div>
+        <div class="upload-zone-hint">JPG, PNG, atau WEBP · Maksimal 5 MB</div>
+        <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" hidden>
+      </div>
+
+      <div class="upload-choice-divider"><span>atau</span></div>
+      <button class="btn btn-outline camera-open-btn" id="camera-open-btn" type="button">
+        <span aria-hidden="true">◎</span> Ambil foto dengan kamera
+      </button>
     </div>
+
+    <section class="camera-panel" id="camera-panel" aria-label="Kamera" hidden>
+      <div class="camera-prompt-card">
+        <div class="camera-prompt-label">IDE GAYA</div>
+        <p id="camera-prompt">Senyum selebar mungkin!</p>
+        <button class="camera-prompt-refresh" id="camera-prompt-refresh" type="button">Ganti ide</button>
+      </div>
+      <div class="camera-view">
+        <video id="camera-video" autoplay playsinline muted></video>
+        <div class="camera-guide" aria-hidden="true"></div>
+      </div>
+      <p class="camera-error" id="camera-error" role="status"></p>
+      <div class="camera-actions">
+        <button class="btn btn-outline btn-sm" id="camera-cancel-btn" type="button">Tutup kamera</button>
+        <button class="btn btn-primary" id="camera-capture-btn" type="button" disabled>Jepret foto</button>
+      </div>
+    </section>
 
     <!-- Preview -->
     <div class="preview-container" id="preview-container">
@@ -43,19 +67,46 @@
       </div>
     </div>
 
-    <!-- Upload button -->
-    <div class="upload-actions" id="upload-actions">
-      <button class="btn btn-primary" id="upload-btn" style="width:100%" disabled>
-        Bagikan momen
-      </button>
-    </div>
+    <form class="guest-form" id="guest-form" hidden>
+      <div class="guest-form-heading">
+        <span class="guest-form-step">LANGKAH 2</span>
+        <h2>Ceritakan tentang dirimu</h2>
+        <p>Data ini akan tampil bersama fotomu, lalu dihapus setelah selesai ditayangkan.</p>
+      </div>
+
+      <label class="guest-field" for="guest-name">
+        <span>Nama <span class="required-mark">*</span></span>
+        <input id="guest-name" name="name" type="text" maxlength="60" autocomplete="name" placeholder="Nama yang ingin ditampilkan" required>
+      </label>
+
+      <label class="guest-field" for="guest-feeling">
+        <span>Perasaanmu hari ini <span class="required-mark">*</span></span>
+        <input id="guest-feeling" name="feeling" type="text" maxlength="80" placeholder="Contoh: Senang dan penuh semangat" required>
+      </label>
+
+      <label class="guest-field" for="guest-social">
+        <span>Nama sosial media <span class="optional-mark">Opsional</span></span>
+        <input id="guest-social" name="socialMedia" type="text" maxlength="80" placeholder="Contoh: @namakamu">
+      </label>
+
+      <label class="guest-field" for="guest-words">
+        <span>Kata-kata hari ini <span class="required-mark">*</span></span>
+        <textarea id="guest-words" name="words" maxlength="180" rows="3" placeholder="Tulis pesan atau kutipan singkatmu..." required></textarea>
+      </label>
+
+      <div class="upload-actions" id="upload-actions">
+        <button class="btn btn-primary" id="upload-btn" type="submit" style="width:100%" disabled>
+          Bagikan momen
+        </button>
+      </div>
+    </form>
 
     <!-- Upload progress -->
     <div class="upload-progress" id="upload-progress">
       <div class="upload-progress-bar-track">
         <div class="upload-progress-bar-fill" id="upload-progress-fill"></div>
       </div>
-      <div class="upload-progress-text" id="upload-progress-text">Menyiapkan foto untuk galeri...</div>
+      <div class="upload-progress-text" id="upload-progress-text">Menyiapkan momenmu untuk galeri...</div>
     </div>
 
     <!-- Queue full message -->

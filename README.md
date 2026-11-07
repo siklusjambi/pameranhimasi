@@ -6,10 +6,12 @@ Interactive exhibition photo display — visitors scan a QR code, upload photos 
 
 - **Fullscreen Display** — Elegant gallery-style frame with smooth animations and glowing effects
 - **QR Code Upload** — Visitors scan QR to open the upload page on their phone
+- **Camera Capture** — Visitors can take a photo in-browser with rotating pose prompts
+- **Visitor Stories** — Name, today's feeling, optional social handle, and a short message appear with each photo
 - **Real-time Queue** — FIFO queue with max 5 photos, live status updates via Socket.io
 - **Client-Side Compression** — Photos are compressed before upload (max 1600px longest side)
 - **Anti-Spam** — 1 active photo per device
-- **Auto Cleanup** — Photos are deleted from server after display; uploads cleared on restart
+- **Auto Cleanup** — Photos and visitor details are removed after display; uploads are cleared on restart
 - **Admin Panel** — Password-protected panel to manage the queue
 - **Deploy Ready** — Configured for Railway and Render
 
@@ -48,8 +50,8 @@ npm start
 
 1. Open `/display.html` in one browser tab (preferably fullscreen with F11)
 2. Open `/upload.html` in another tab or on your phone
-3. Upload a photo from the upload page
-4. Watch it appear in the display after the current example cycle completes
+3. Take a photo or choose one, then fill in the visitor details
+4. Watch the photo and story appear after the example and QR screens
 5. Check the admin panel at `/admin.html` (password: `admin123`)
 
 > **Tip**: To test from your phone on the same network, set `BASE_URL` in `.env` to your computer's local IP (e.g., `http://192.168.1.100:3000`). The QR code on the display will link to this URL.
@@ -59,7 +61,7 @@ npm start
 1. Push code to a Git repository
 2. Connect the repo on [Railway](https://railway.app)
 3. Set environment variables:
-   - `BASE_URL` = your Railway app URL (e.g., `https://your-app.up.railway.app`)
+   - `BASE_URL` = optional; the Railway public domain is detected automatically
    - `ADMIN_PASSWORD` = a secure password
 4. Deploy — Railway auto-detects the `railway.json` config
 

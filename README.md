@@ -113,7 +113,7 @@ npm start
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `PORT` | `3000` | Server port |
-| `BASE_URL` | `http://localhost:3000` | Public URL for QR code |
+| `BASE_URL` | Railway public domain, or `http://localhost:3000` locally | Optional public URL for QR code |
 | `ADMIN_PASSWORD` | `admin123` | Admin panel password |
 
 ## License

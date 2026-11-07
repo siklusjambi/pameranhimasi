@@ -14,11 +14,10 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 const PORT = process.env.PORT || 3000;
-const railwayPublicDomain = process.env.RAILWAY_PUBLIC_DOMAIN;
 const configuredBaseUrl = process.env.BASE_URL;
-const isLocalBaseUrl = configuredBaseUrl && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?\/?$/i.test(configuredBaseUrl);
-const BASE_URL = (railwayPublicDomain && (!configuredBaseUrl || isLocalBaseUrl)
-  ? `https://${railwayPublicDomain}`
+const isRailway = Boolean(process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_PUBLIC_DOMAIN);
+const BASE_URL = (isRailway
+  ? 'https://web-production-09dcb.up.railway.app'
   : configuredBaseUrl || `http://localhost:${PORT}`).replace(/\/+$/, '');
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 const MAX_QUEUE = 5;

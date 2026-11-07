@@ -1,5 +1,5 @@
 /**
- * Admin Page Controller — Momen dalam Bingkai
+ * Admin Page Controller — Galeri Bersama
  */
 
 (function () {

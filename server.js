@@ -323,7 +323,7 @@ io.on('connection', (socket) => {
 
 // --------------- Start ---------------
 server.listen(PORT, () => {
-  console.log(`\n  ✨ Momen dalam Bingkai ✨`);
+  console.log(`\n  ✨ Galeri Bersama ✨`);
   console.log(`  Server berjalan di http://localhost:${PORT}`);
   console.log(`  Display:  http://localhost:${PORT}/display.html`);
   console.log(`  Upload:   http://localhost:${PORT}/upload.html`);

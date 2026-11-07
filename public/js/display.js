@@ -1,8 +1,8 @@
 /**
- * Display Page Controller — Momen dalam Bingkai
+ * Display Page Controller — Galeri Bersama
  *
  * The example and QR screens each appear for five seconds between visitor
- * photos. Each visitor photo appears twice for nine seconds.
+ * photos. Each visitor photo appears once for 13.5 seconds and can be paused.
  */
 
 (function () {
@@ -20,20 +20,27 @@
   const visitorSocial = document.getElementById('visitor-social');
   const visitorWords = document.getElementById('visitor-words');
   const visitorQueueNum = document.getElementById('visitor-queue-num');
-  const roundBadge = document.getElementById('round-badge');
+  const visitorDisplayStatus = document.getElementById('visitor-display-status');
+  const pauseButton = document.getElementById('display-pause-btn');
+  const pauseLabel = document.getElementById('display-pause-label');
   const progressBar = document.getElementById('progress-bar');
   const queueDots = document.getElementById('queue-dots');
   const queueCount = document.getElementById('queue-count');
 
   const EXAMPLE_DURATION = 5000;
   const QR_DURATION = 5000;
-  const VISITOR_DURATION = 9000;
-  const VISITOR_ROUNDS = 2;
+  const VISITOR_DURATION = 13500;
   const FADE_GAP = 500;
 
   let queueData = [];
   let cycleTimer = null;
   let progressFrame = null;
+  let visitorTimer = null;
+  let visitorClockFrame = null;
+  let visitorDeadline = 0;
+  let visitorRemaining = 0;
+  let visitorOnComplete = null;
+  let visitorIsPaused = false;
 
   async function init() {
     try {
@@ -68,6 +75,7 @@
   function showScene(scene) {
     [sceneExample, sceneQR, sceneVisitor].forEach((item) => item.classList.remove('active'));
     if (scene) scene.classList.add('active');
+    pauseButton.hidden = scene !== sceneVisitor;
   }
 
   function startProgress(duration) {
@@ -108,7 +116,7 @@
       const photo = await response.json();
 
       if (photo.hasNext) {
-        runVisitorCycle(photo, 1);
+        runVisitorCycle(photo);
       } else {
         runExampleCycle();
       }
@@ -118,7 +126,7 @@
     }
   }
 
-  function runVisitorCycle(photo, round) {
+  function runVisitorCycle(photo) {
     visitorPhoto.onload = () => {
       visitorName.textContent = photo.guest.name;
       visitorFeeling.textContent = photo.guest.feeling;
@@ -126,24 +134,17 @@
       visitorSocialField.hidden = !photo.guest.socialMedia;
       visitorWords.textContent = `“${photo.guest.words}”`;
       visitorQueueNum.textContent = `#${photo.queueNumber}`;
-      roundBadge.textContent = `Putaran ${round} / ${VISITOR_ROUNDS}`;
+      visitorDisplayStatus.textContent = 'Momen pengunjung · 13,5 detik';
       showScene(sceneVisitor);
-      startProgress(VISITOR_DURATION);
-
-      cycleTimer = setTimeout(() => {
+      startVisitorClock(VISITOR_DURATION, () => {
         showScene(null);
         resetProgress();
-
-        if (round < VISITOR_ROUNDS) {
-          cycleTimer = setTimeout(() => runVisitorCycle(photo, round + 1), FADE_GAP);
-        } else {
-          cycleTimer = setTimeout(async () => {
-            const deleted = await markPhotoDone(photo.id);
-            if (deleted) clearVisitorDisplay();
-            runExampleCycle();
-          }, FADE_GAP);
-        }
-      }, VISITOR_DURATION);
+        cycleTimer = setTimeout(async () => {
+          const deleted = await markPhotoDone(photo.id);
+          if (deleted) clearVisitorDisplay();
+          runExampleCycle();
+        }, FADE_GAP);
+      });
     };
 
     visitorPhoto.onerror = () => {
@@ -156,6 +157,82 @@
 
     visitorPhoto.src = photo.url;
   }
+
+  function startVisitorClock(duration, onComplete) {
+    stopVisitorClock();
+    visitorRemaining = duration;
+    visitorOnComplete = onComplete;
+    visitorIsPaused = false;
+    updatePauseButton();
+    runVisitorClockSegment();
+  }
+
+  function runVisitorClockSegment() {
+    visitorDeadline = Date.now() + visitorRemaining;
+    visitorTimer = setTimeout(() => {
+      visitorRemaining = 0;
+      progressBar.style.width = '100%';
+      if (visitorClockFrame) cancelAnimationFrame(visitorClockFrame);
+      visitorClockFrame = null;
+      visitorTimer = null;
+      const onComplete = visitorOnComplete;
+      visitorOnComplete = null;
+      if (onComplete) onComplete();
+    }, visitorRemaining);
+    updateVisitorProgress();
+  }
+
+  function updateVisitorProgress() {
+    if (visitorIsPaused) return;
+    visitorRemaining = Math.max(0, visitorDeadline - Date.now());
+    progressBar.style.width = `${((VISITOR_DURATION - visitorRemaining) / VISITOR_DURATION) * 100}%`;
+    if (visitorRemaining > 0) visitorClockFrame = requestAnimationFrame(updateVisitorProgress);
+  }
+
+  function pauseVisitorClock() {
+    if (!visitorTimer || visitorIsPaused) return;
+    visitorRemaining = Math.max(0, visitorDeadline - Date.now());
+    clearTimeout(visitorTimer);
+    visitorTimer = null;
+    if (visitorClockFrame) cancelAnimationFrame(visitorClockFrame);
+    visitorClockFrame = null;
+    visitorIsPaused = true;
+    visitorDisplayStatus.textContent = 'Dijeda untuk foto';
+    updatePauseButton();
+    progressBar.style.width = `${((VISITOR_DURATION - visitorRemaining) / VISITOR_DURATION) * 100}%`;
+  }
+
+  function resumeVisitorClock() {
+    if (!visitorIsPaused || !visitorOnComplete) return;
+    visitorIsPaused = false;
+    visitorDisplayStatus.textContent = 'Momen pengunjung · 13,5 detik';
+    updatePauseButton();
+    runVisitorClockSegment();
+  }
+
+  function updatePauseButton() {
+    const paused = visitorIsPaused;
+    pauseButton.setAttribute('aria-pressed', String(paused));
+    pauseButton.setAttribute('aria-label', paused ? 'Lanjutkan tampilan foto' : 'Jeda tampilan foto');
+    pauseLabel.textContent = paused ? 'Lanjutkan tampilan' : 'Jeda tampilan';
+    pauseButton.querySelector('.display-pause-icon').textContent = paused ? '▶' : 'Ⅱ';
+  }
+
+  function stopVisitorClock() {
+    if (visitorTimer) clearTimeout(visitorTimer);
+    if (visitorClockFrame) cancelAnimationFrame(visitorClockFrame);
+    visitorTimer = null;
+    visitorClockFrame = null;
+    visitorOnComplete = null;
+    visitorRemaining = 0;
+    visitorIsPaused = false;
+    updatePauseButton();
+  }
+
+  pauseButton.addEventListener('click', () => {
+    if (visitorIsPaused) resumeVisitorClock();
+    else pauseVisitorClock();
+  });
 
   async function markPhotoDone(id) {
     let lastError;
@@ -178,6 +255,7 @@
   }
 
   function clearVisitorDisplay() {
+    stopVisitorClock();
     visitorPhoto.removeAttribute('src');
     visitorName.textContent = '—';
     visitorFeeling.textContent = '—';

@@ -1,5 +1,5 @@
 /**
- * Upload Page Controller — Momen dalam Bingkai
+ * Upload Page Controller — Galeri Bersama
  */
 
 (function () {
@@ -419,7 +419,7 @@
         statusPosition.textContent = `Posisi ${index + 1} dari ${activeQueue.length} dalam antrean`;
       }
     } else if (status === 'done') {
-      statusPosition.textContent = 'Foto dan data ceritamu telah dihapus dari server.';
+      statusPosition.textContent = 'Foto dan seluruh data yang kamu isi telah dihapus permanen dari server.';
     }
   }
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Momen dalam Bingkai — Display</title>
+  <title>Galeri Bersama — Display</title>
   <link rel="stylesheet" href="/css/common.css">
   <link rel="stylesheet" href="/css/display.css">
 </head>
@@ -19,9 +19,9 @@
   <!-- ============ SCENE 1: Example Photo ============ -->
   <div class="scene active" id="scene-example">
     <div class="scene-col scene-text-col">
-      <div class="event-badge">HIMASI · GALERI MOMEN</div>
+      <div class="event-badge">Galeri Bersama</div>
       <h1 class="scene-title">
-        Tampilkan wajahmu<br>di bingkai HIMASI,
+        Tampilkan wajahmu<br>di bingkai kami,
         <span class="text-sky">tunjukkan pesona<br>luar biasamu.</span>
       </h1>
       <p class="scene-subtitle">Setiap cerita punya bingkainya sendiri. Jadikan momenmu bagian dari galeri hari ini.</p>
@@ -91,7 +91,7 @@
       </div>
     </div>
     <div class="scene-col scene-text-col text-right">
-      <div class="event-badge">HIMASI · BAGIKAN CERITAMU</div>
+      <div class="event-badge">Galeri Bersama</div>
       <h1 class="scene-title">
         Satu pindai,<br>satu cerita.
         <span class="text-sky">Giliranmu bersinar<br>di layar pameran.</span>
@@ -104,7 +104,7 @@
   <!-- ============ SCENE 3: Visitor Photo ============ -->
   <div class="scene" id="scene-visitor">
     <div class="scene-col scene-text-col">
-      <div class="event-badge">HIMASI · CERITA PENGUNJUNG</div>
+      <div class="event-badge">Galeri Bersama</div>
       <h1 class="scene-title">
         Cerita <span class="text-sky">pengunjung</span>
       </h1>
@@ -130,8 +130,8 @@
           <div class="field-value field-number" id="visitor-queue-num">#1</div>
         </div>
       </div>
-      <p class="visitor-note">Satu cerita baru menjadi bagian dari galeri HIMASI.</p>
-      <div class="step-badge" id="round-badge">Putaran 1 / 2</div>
+      <p class="visitor-note">Satu cerita baru menjadi bagian dari galeri hari ini.</p>
+      <div class="step-badge" id="visitor-display-status">Momen pengunjung · 13,5 detik</div>
     </div>
     <div class="scene-col scene-frame-col">
       <div class="frame-blob"></div>
@@ -152,6 +152,11 @@
     </div>
     <span class="queue-count" id="queue-count">0 / 5</span>
   </div>
+
+  <button class="display-pause-btn" id="display-pause-btn" type="button" aria-label="Jeda tampilan foto" aria-pressed="false" hidden>
+    <span class="display-pause-icon" aria-hidden="true">Ⅱ</span>
+    <span id="display-pause-label">Jeda tampilan</span>
+  </button>
 
   <!-- Progress bar (very bottom) -->
   <div class="progress-track">

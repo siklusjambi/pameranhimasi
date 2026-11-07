@@ -335,6 +335,56 @@ body.display-body {
   white-space: nowrap;
 }
 
+.display-pause-btn {
+  position: fixed;
+  z-index: 5;
+  right: clamp(1.25rem, 4vw, 3rem);
+  bottom: 4.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  min-width: 178px;
+  min-height: 48px;
+  padding: 0.7rem 1rem;
+  border: 1px solid rgba(125, 211, 252, 0.35);
+  border-radius: 12px;
+  background: rgba(6, 24, 50, 0.88);
+  color: #e4f2ff;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.display-pause-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--sky-400);
+  background: rgba(15, 46, 99, 0.96);
+}
+
+.display-pause-btn:focus-visible {
+  outline: 3px solid var(--sky-400);
+  outline-offset: 3px;
+}
+
+.display-pause-btn[hidden] {
+  display: none;
+}
+
+.display-pause-icon {
+  color: var(--sky-400);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.display-pause-btn[aria-pressed="true"] .display-pause-icon {
+  color: #4ade80;
+}
+
 .progress-track {
   position: fixed;
   z-index: 4;
@@ -483,6 +533,16 @@ body.display-body {
     right: 50%;
     bottom: 0.9rem;
     transform: translateX(50%);
+  }
+
+  .display-pause-btn {
+    right: 50%;
+    bottom: 4.1rem;
+    transform: translateX(50%);
+  }
+
+  .display-pause-btn:hover {
+    transform: translate(50%, -2px);
   }
 }
 

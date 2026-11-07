@@ -1,4 +1,4 @@
-# 🖼️ Momen dalam Bingkai
+# Galeri Bersama
 
 Interactive exhibition photo display — visitors scan a QR code, upload photos from their phone, and see them displayed on the big screen in a beautiful gallery frame.
 
@@ -8,6 +8,7 @@ Interactive exhibition photo display — visitors scan a QR code, upload photos 
 - **QR Code Upload** — Visitors scan QR to open the upload page on their phone
 - **Camera Capture** — Visitors can take a photo in-browser with rotating pose prompts
 - **Visitor Stories** — Name, today's feeling, optional social handle, and a short message appear with each photo
+- **Visitor Display** — Each photo appears once for 13.5 seconds, with a pause control so guests can take a picture
 - **Real-time Queue** — FIFO queue with max 5 photos, live status updates via Socket.io
 - **Client-Side Compression** — Photos are compressed before upload (max 1600px longest side)
 - **Anti-Spam** — 1 active photo per device
